@@ -1,13 +1,19 @@
 Rails.application.routes.draw do
-  # get 'signup', to: 'users#new'
+  get 'signup', to: 'users#new'
 
   root 'static_pages#home'
  
-  resources :users
+ resources :users do
+    member do
+      get :following, :followers
+    end
+  end
   
   resources :sessions, only: [:new, :create, :destroy]
   
   resources :microposts, only: [:create, :destroy]
+  
+   resources :relationships, only: [:create, :destroy]
   
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
